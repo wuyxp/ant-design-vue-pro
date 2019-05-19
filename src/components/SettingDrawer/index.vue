@@ -38,7 +38,7 @@
                   style="margin: 10px"
                   @click="handleSettingChange('themeColor', tag)"
                   :color="tag"
-                  >{{ themeColor === tag ? "√" : "&nbsp;&nbsp;" }}</a-tag
+                  >{{ themeColor === tag ? "√" : "&nbsp;&nbsp;&nbsp;" }}</a-tag
                 >
               </a-tooltip>
             </template>
@@ -49,6 +49,7 @@
   </div>
 </template>
 <script>
+import { setTimeout } from "timers";
 export default {
   data() {
     return {
@@ -66,6 +67,30 @@ export default {
         "#108ee9"
       ]
     };
+  },
+  watch: {
+    "$route.query.themeColor": {
+      handler(color) {
+        this.hide = this.$message.loading("正在切换主题中", 0);
+        window.less
+          .modifyVars({
+            "@primary-color": color
+          })
+          .then(() => {
+            this.hide();
+            setTimeout(() => {
+              this.$message.success("主题切换成功", 2);
+            }, 300);
+          })
+          .catch(() => {
+            this.hide();
+            setTimeout(() => {
+              this.$message.error("主题切换失败", 2);
+            }, 300);
+          });
+      },
+      immediate: true
+    }
   },
   computed: {
     themeColor() {

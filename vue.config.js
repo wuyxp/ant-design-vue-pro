@@ -11,6 +11,7 @@ const options = {
   ),
   mainLessFile: "",
   themeVariables: ["@primary-color"],
+  indexFileName: "index.html",
   generateOnce: false
 };
 
@@ -19,9 +20,6 @@ module.exports = {
   css: {
     loaderOptions: {
       less: {
-        modifyVars: {
-          "primary-color": "#1DA57A"
-        },
         javascriptEnabled: true
       }
     }
@@ -53,14 +51,16 @@ module.exports = {
             console.log("Skipping proxy for browser request.");
             return "/index.html";
           } else if (process.env.MOCK !== "none") {
-            const name = req.path
-              .split("/api/")[1]
-              .split("/")
-              .join("_");
-            const mock = require(`./mock/${name}`);
-            const result = mock(req.method);
-            delete require.cache[require.resolve(`./mock/${name}`)];
-            return res.send(result);
+            if (req.path.includes("/api/")) {
+              const name = req.path
+                .split("/api/")[1]
+                .split("/")
+                .join("_");
+              const mock = require(`./mock/${name}`);
+              const result = mock(req.method);
+              delete require.cache[require.resolve(`./mock/${name}`)];
+              return res.send(result);
+            }
           }
         }
       }

@@ -22,7 +22,8 @@ import {
   Dropdown,
   DatePicker,
   Tag,
-  Tooltip
+  Tooltip,
+  message
 } from "ant-design-vue";
 import Authorized from "./components/Authorized";
 import Auth from "./directives/auth";
@@ -44,6 +45,8 @@ Vue.use(Dropdown);
 Vue.use(DatePicker);
 Vue.use(Tag);
 Vue.use(Tooltip);
+Vue.use(message);
+Vue.prototype.$message = message;
 Vue.component("Authorized", Authorized);
 Vue.use(Auth);
 Vue.use(VueI18n);
