@@ -71,34 +71,34 @@ export default {
   watch: {
     "$route.query.themeColor": {
       handler(color) {
-        this.hide = this.$message.loading("正在切换主题中", 0);
-        window.less
-          .modifyVars({
-            "@primary-color": color
-          })
-          .then(() => {
-            this.hide();
-            setTimeout(() => {
-              this.$message.success("主题切换成功", 2);
-            }, 300);
-          })
-          .catch(() => {
-            this.hide();
-            setTimeout(() => {
-              this.$message.error("主题切换失败", 2);
-            }, 300);
-          });
+        if (color) {
+          this.hide = this.$message.loading("正在切换主题中", 0);
+          window.less
+            .modifyVars({
+              "@primary-color": color
+            })
+            .then(() => {
+              this.hide();
+              setTimeout(() => {
+                this.$message.success("主题切换成功", 1.5);
+              }, 300);
+            })
+            .catch(() => {
+              this.hide();
+              setTimeout(() => {
+                this.$message.error("主题切换失败", 1.5);
+              }, 300);
+            });
+        }
       },
       immediate: true
     }
   },
-  computed: {
-    themeColor() {
-      if (this.$route.query.themeColor) {
-        return this.$route.query.themeColor;
-      }
-      return this.colorThemeTags[0];
+  mounted() {
+    if (this.$route.query.themeColor) {
+      this.themeColor = this.$route.query.themeColor;
     }
+    this.handleSettingChange("themeColor", this.colorThemeTags[0]);
   },
   methods: {
     onClose() {
