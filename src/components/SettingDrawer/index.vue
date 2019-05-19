@@ -30,6 +30,19 @@
             <a-radio value="left">左侧</a-radio>
             <a-radio value="top">顶部</a-radio>
           </a-radio-group>
+          <h2>主题颜色</h2>
+          <div>
+            <template v-for="tag in colorThemeTags">
+              <a-tooltip :key="tag" :title="tag">
+                <a-tag
+                  style="margin: 10px"
+                  @click="handleSettingChange('themeColor', tag)"
+                  :color="tag"
+                  >{{ themeColor === tag ? "√" : "&nbsp;&nbsp;" }}</a-tag
+                >
+              </a-tooltip>
+            </template>
+          </div>
         </div>
       </div>
     </a-drawer>
@@ -39,8 +52,28 @@
 export default {
   data() {
     return {
-      visible: false
+      visible: false,
+      colorThemeTags: [
+        "pink",
+        "red",
+        "orange",
+        "cyan",
+        "blue",
+        "purple",
+        "#f50",
+        "#2db7f5",
+        "#87d068",
+        "#108ee9"
+      ]
     };
+  },
+  computed: {
+    themeColor() {
+      if (this.$route.query.themeColor) {
+        return this.$route.query.themeColor;
+      }
+      return this.colorThemeTags[0];
+    }
   },
   methods: {
     onClose() {

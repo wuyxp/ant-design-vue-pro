@@ -20,7 +20,9 @@ import {
   Select,
   LocaleProvider,
   Dropdown,
-  DatePicker
+  DatePicker,
+  Tag,
+  Tooltip
 } from "ant-design-vue";
 import Authorized from "./components/Authorized";
 import Auth from "./directives/auth";
@@ -40,6 +42,8 @@ Vue.use(Select);
 Vue.use(LocaleProvider);
 Vue.use(Dropdown);
 Vue.use(DatePicker);
+Vue.use(Tag);
+Vue.use(Tooltip);
 Vue.component("Authorized", Authorized);
 Vue.use(Auth);
 Vue.use(VueI18n);
