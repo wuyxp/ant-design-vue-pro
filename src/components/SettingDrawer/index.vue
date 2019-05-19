@@ -38,7 +38,11 @@
                   style="margin: 10px"
                   @click="handleSettingChange('themeColor', tag)"
                   :color="tag"
-                  >{{ themeColor === tag ? "√" : "&nbsp;&nbsp;&nbsp;" }}</a-tag
+                  >{{
+                    ($route.query.themeColor || colorThemeTags[0]) === tag
+                      ? "√"
+                      : "&nbsp;&nbsp;&nbsp;"
+                  }}</a-tag
                 >
               </a-tooltip>
             </template>
@@ -72,7 +76,7 @@ export default {
     "$route.query.themeColor": {
       handler(color) {
         if (color) {
-          this.hide = this.$message.loading("正在切换主题中", 0);
+          this.hide = this.$message.loading("正在设置主题中", 0);
           window.less
             .modifyVars({
               "@primary-color": color
@@ -81,24 +85,22 @@ export default {
               this.hide();
               setTimeout(() => {
                 this.$message.success("主题切换成功", 1.5);
-              }, 300);
+              }, 500);
             })
             .catch(() => {
               this.hide();
               setTimeout(() => {
                 this.$message.error("主题切换失败", 1.5);
-              }, 300);
+              }, 500);
             });
+        } else {
+          window.less.modifyVars({
+            "@primary-color": this.colorThemeTags[0]
+          });
         }
       },
       immediate: true
     }
-  },
-  mounted() {
-    if (this.$route.query.themeColor) {
-      this.themeColor = this.$route.query.themeColor;
-    }
-    this.handleSettingChange("themeColor", this.colorThemeTags[0]);
   },
   methods: {
     onClose() {
